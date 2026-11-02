@@ -19,8 +19,12 @@ Adaptive Video
 		en
 
 	:Description:
-		Delivers FAL videos as adaptive HLS streams, encoded asynchronously
-		with ffmpeg
+		Delivers FAL videos as adaptive HLS streams for a fast start and
+		smooth playback on any connection. Videos are encoded
+		asynchronously with ffmpeg in a background worker; until a stream
+		is ready, the original file is played. Works with `<f:media>` and
+		the Text & Media content element, uses native HLS or hls.js and
+		supports poster images from b13/poster-image.
 
 	:Keywords:
 		TYPO3 CMS, extension, video, HLS, ffmpeg, streaming
