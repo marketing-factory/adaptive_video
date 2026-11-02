@@ -1,0 +1,70 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "mfd/adaptive-video",
+    "description": "Adaptive HLS streaming for FAL videos, encoded asynchronously with ffmpeg",
+    "type": "typo3-cms-extension",
+    "license": "GPL-2.0-or-later",
+    "keywords": [
+        "TYPO3 CMS",
+        "Extension",
+        "Video",
+        "HLS",
+        "ffmpeg"
+    ],
+    "authors": [
+        {
+            "name": "Ingo Schmitt",
+            "role": "Developer",
+            "email": "ingo.schmitt@marketing-factory.de",
+            "homepage": "https://www.marketing-factory.de"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/marketing-factory/adaptive_video/issues",
+        "source": "https://github.com/marketing-factory/adaptive_video",
+        "security": "https://github.com/marketing-factory/adaptive_video/blob/main/SECURITY.md"
+    },
+    "require": {
+        "php": "^8.2",
+        "b13/poster-image": "^2.0",
+        "typo3/cms-core": "^13.4 || ^14.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0",
+        "typo3/cms-filemetadata": "^13.4 || ^14.0",
+        "typo3/testing-framework": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mfd\\AdaptiveVideo\\": "Classes/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mfd\\AdaptiveVideo\\Tests\\": "Tests/"
+        }
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "sort-packages": true,
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "adaptive_video",
+            "version": "0.1.0-alpha",
+            "web-dir": ".Build/public",
+            "Package": {
+                "providesPackages": {}
+            }
+        }
+    },
+    "scripts": {
+        "test:unit": "phpunit -c Build/UnitTests.xml",
+        "test:functional": "phpunit -c Build/FunctionalTests.xml"
+    }
+}

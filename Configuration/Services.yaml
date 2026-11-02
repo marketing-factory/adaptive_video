@@ -1,0 +1,47 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Mfd\AdaptiveVideo\:
+    resource: '../Classes/*'
+    exclude:
+      - '../Classes/Domain/Model/*'
+      - '../Classes/Messenger/Message/*'
+      - '../Classes/Processing/EncodingProfile.php'
+      - '../Classes/Processing/ProfileSnapshot.php'
+      - '../Classes/Processing/SourceInfo.php'
+      - '../Classes/Processing/Exception/*'
+
+  Mfd\AdaptiveVideo\Configuration\ExtensionSettings:
+    factory: ['Mfd\AdaptiveVideo\Configuration\ExtensionSettings', 'create']
+
+  # Instantiated by the RendererRegistry via GeneralUtility::makeInstance()
+  Mfd\AdaptiveVideo\Resource\Rendering\AdaptiveVideoRenderer:
+    public: true
+
+  # Instantiated by the DataHandler via GeneralUtility::makeInstance()
+  Mfd\AdaptiveVideo\Hooks\DataHandlerHook:
+    public: true
+
+  # Keeps the log channel of the service and mirrors its entries to the worker console
+  Mfd\AdaptiveVideo\Processing\VideoProcessingService:
+    arguments:
+      $logger: !service
+        class: Mfd\AdaptiveVideo\Logging\ConsoleForwardingLogger
+        arguments:
+          $logger: !service
+            class: TYPO3\CMS\Core\Log\Logger
+            factory: ['@TYPO3\CMS\Core\Log\LogManager', 'getLogger']
+            arguments: ['Mfd\AdaptiveVideo\Processing\VideoProcessingService']
+          $workerConsole: '@Mfd\AdaptiveVideo\Logging\WorkerConsole'
+
+  adaptive_video.messenger.transport:
+    class: Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport
+    factory: ['@Mfd\AdaptiveVideo\Messenger\TransportFactory', 'create']
+    tags:
+      - name: 'messenger.sender'
+        identifier: 'adaptive_video'
+      - name: 'messenger.receiver'
+        identifier: 'adaptive_video'

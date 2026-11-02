@@ -1,0 +1,50 @@
+# cat=basic/enable/10; type=boolean; label=Enable processing: Create versions and dispatch encoding jobs in this environment. Disable on environments without ffmpeg (local, review); existing ready versions are still delivered.
+processingEnabled = 0
+
+# cat=basic/enable/15; type=boolean; label=Enable delivery: Deliver ready versions as HLS in this environment (additionally to the site set). Disable to encode first and switch the frontend later; originals are delivered meanwhile.
+deliveryEnabled = 1
+
+# cat=basic/enable/20; type=string; label=Encoding profile: Identifier of the active encoding profile. Additional profiles can be registered in $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adaptive_video']['profiles'].
+defaultProfile = default
+
+# cat=basic/enable/30; type=string; label=Supported file extensions: Comma-separated list of video file extensions that are processed.
+supportedFileExtensions = mp4,mov,m4v,webm
+
+# cat=basic/enable/40; type=int+; label=Minimum duration (seconds): Shorter videos are not processed and keep using the original file.
+minimumDuration = 10
+
+# cat=ffmpeg/file/10; type=string; label=ffmpeg binary: Path to ffmpeg, or the plain name to look it up in PATH.
+ffmpegPath = ffmpeg
+
+# cat=ffmpeg/file/20; type=string; label=ffprobe binary: Path to ffprobe, or the plain name to look it up in PATH.
+ffprobePath = ffprobe
+
+# cat=ffmpeg/file/30; type=string; label=Command prefix: Whitespace-separated arguments placed before the binary, e.g. "nice -n 19". Leave empty if not available.
+commandPrefix = nice -n 19
+
+# cat=ffmpeg/file/40; type=string; label=Additional ffmpeg options: Whitespace-separated output options for all encoders, e.g. "-threads 1 -preset slow". Input, output, codecs and segmentation are set by the extension. Options other than -threads are part of the profile fingerprint, so changing them re-encodes all videos.
+ffmpegOptions = -threads 1
+
+# cat=limits/other/10; type=int+; label=Maximum runtime (seconds): ffmpeg is aborted after this time and the version is marked as failed. Must be lower than the redeliver timeout of the messenger transport.
+maxRuntime = 10800
+
+# cat=limits/other/15; type=int+; label=Redeliver timeout (seconds): An unacknowledged job is handed to a worker again after this time (crashed worker). Must be higher than the maximum runtime.
+redeliverTimeout = 14400
+
+# cat=limits/other/20; type=int+; label=Maximum source file size (MB): Larger files are skipped. 0 disables the limit.
+maxSourceFileSize = 0
+
+# cat=limits/other/30; type=int+; label=Maximum source duration (seconds): Longer videos are skipped. 0 disables the limit.
+maxSourceDuration = 0
+
+# cat=storage/file/10; type=string; label=Artifact directory: Directory for generated streams, relative to the public web root.
+artifactDirectory = _videos
+
+# cat=storage/file/20; type=string; label=Public URL prefix: URL path under which the artifact directory is served.
+publicUrlPrefix = /_videos/
+
+# cat=storage/file/30; type=string; label=Temporary directory: Working directory for encodings, absolute or relative to the project root. Should be on the same filesystem as the artifact directory. Empty uses var/transient/adaptive_video.
+temporaryDirectory =
+
+# cat=rendering/enable/10; type=int+; label=Renderer priority: Priority of the video renderer. Must be higher than the renderers it replaces (b13/poster-image: 10, Core: 1).
+rendererPriority = 20

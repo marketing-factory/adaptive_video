@@ -1,0 +1,31 @@
+categories:
+  adaptiveVideo:
+    label: 'Adaptive Video'
+
+settings:
+  adaptiveVideo.enabled:
+    label: 'Deliver adaptive streams'
+    description: >-
+      Videos with a ready version are delivered as HLS, all others as original.
+      Encoding is configured globally.
+    type: bool
+    default: true
+    category: adaptiveVideo
+  adaptiveVideo.preload:
+    label: 'Preload'
+    description: >-
+      Used if the template does not set preload.
+      With "none" and "metadata", segments are loaded on play only.
+    type: string
+    default: metadata
+    enum:
+      none: 'None'
+      metadata: 'Metadata'
+      auto: 'Auto'
+    category: adaptiveVideo
+  adaptiveVideo.capLevelToPlayerSize:
+    label: 'Limit quality to player size'
+    description: 'hls.js does not load renditions larger than the player. Native HLS (Safari) decides on its own.'
+    type: bool
+    default: true
+    category: adaptiveVideo
