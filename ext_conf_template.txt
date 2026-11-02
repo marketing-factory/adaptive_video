@@ -19,11 +19,11 @@ ffmpegPath = ffmpeg
 # cat=ffmpeg/file/20; type=string; label=ffprobe binary: Path to ffprobe, or the plain name to look it up in PATH.
 ffprobePath = ffprobe
 
-# cat=ffmpeg/file/30; type=string; label=Command prefix: Whitespace-separated arguments placed before the binary, e.g. "nice -n 19". Leave empty if not available.
-commandPrefix = nice -n 19
+# cat=ffmpeg/file/30; type=string; label=Command prefix: Whitespace-separated arguments placed before the ffmpeg and ffprobe binaries. Empty runs the binaries directly.
+commandPrefix =
 
-# cat=ffmpeg/file/40; type=string; label=Additional ffmpeg options: Whitespace-separated output options for all encoders, e.g. "-threads 1 -preset slow". Input, output, codecs and segmentation are set by the extension. Options other than -threads are part of the profile fingerprint, so changing them re-encodes all videos.
-ffmpegOptions = -threads 1
+# cat=ffmpeg/file/40; type=string; label=Additional ffmpeg options: Whitespace-separated output options for all encoders. Input, output, codecs and segmentation are set by the extension. Options other than -threads are part of the profile fingerprint, so changing them re-encodes all videos.
+ffmpegOptions =
 
 # cat=limits/other/10; type=int+; label=Maximum runtime (seconds): ffmpeg is aborted after this time and the version is marked as failed. Must be lower than the redeliver timeout of the messenger transport.
 maxRuntime = 10800

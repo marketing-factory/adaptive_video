@@ -93,9 +93,9 @@ final readonly class ExtensionSettings
             max(0, (int)($configuration['minimumDuration'] ?? 10)),
             trim((string)($configuration['ffmpegPath'] ?? '')) ?: 'ffmpeg',
             trim((string)($configuration['ffprobePath'] ?? '')) ?: 'ffprobe',
-            // Argument lists for Symfony Process: "nice -n 19" becomes ['nice', '-n', '19']
-            GeneralUtility::trimExplode(' ', (string)($configuration['commandPrefix'] ?? 'nice -n 19'), true),
-            GeneralUtility::trimExplode(' ', (string)($configuration['ffmpegOptions'] ?? '-threads 1'), true),
+            // Argument lists for Symfony Process: "a -b c" becomes ['a', '-b', 'c']
+            GeneralUtility::trimExplode(' ', (string)($configuration['commandPrefix'] ?? ''), true),
+            GeneralUtility::trimExplode(' ', (string)($configuration['ffmpegOptions'] ?? ''), true),
             $maxRuntime,
             $redeliverTimeout,
             max(0, (int)($configuration['maxSourceFileSize'] ?? 0)),

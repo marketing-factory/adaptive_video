@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Queues videos as soon as a file reference is saved, copied or localized in
  * the backend, instead of waiting for the next scan. The same rules as in the
  * scan apply; the scan stays the main way and catches everything that does
- * not pass the DataHandler (ADR-008).
+ * not pass the DataHandler.
  */
 final readonly class DataHandlerHook
 {

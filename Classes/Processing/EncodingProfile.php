@@ -80,7 +80,7 @@ final readonly class EncodingProfile
     }
 
     /**
-     * Renditions for a source without upscaling (ADR-007). The configured
+     * Renditions for a source without upscaling. The configured
      * height refers to the shorter side, so a portrait video gets 1080x1920 as
      * "1080p". A source below the smallest rendition is encoded once in its
      * own size with the smallest bitrate.

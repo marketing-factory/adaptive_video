@@ -9,7 +9,7 @@ use Mfd\AdaptiveVideo\Processing\ProfileSnapshot;
 /**
  * One encoding of a file for a given source content and profile. A version is
  * never switched off: it is active as long as it is the newest ready version
- * whose source fingerprint matches the current sys_file.sha1 (ADR-005).
+ * whose source fingerprint matches the current sys_file.sha1.
  */
 final readonly class Version
 {

@@ -123,7 +123,7 @@ final readonly class VersionRepository
 
     /**
      * Newest ready version matching the current content of the file. Returns
-     * null if the file changed since, so the original is delivered (ADR-010).
+     * null if the file changed since, so the original is delivered.
      */
     public function findActive(int $fileUid, string $sourceFingerprint): ?Version
     {

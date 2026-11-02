@@ -24,8 +24,8 @@ final class ExtensionSettingsTest extends UnitTestCase
         self::assertSame(10, $subject->minimumDuration);
         self::assertSame('ffmpeg', $subject->ffmpegPath);
         self::assertSame('ffprobe', $subject->ffprobePath);
-        self::assertSame(['nice', '-n', '19'], $subject->commandPrefix);
-        self::assertSame(['-threads', '1'], $subject->ffmpegOptions);
+        self::assertSame([], $subject->commandPrefix);
+        self::assertSame([], $subject->ffmpegOptions);
         self::assertSame(10800, $subject->maxRuntime);
         self::assertSame(14400, $subject->redeliverTimeout);
         self::assertSame(0, $subject->maxSourceFileSize);

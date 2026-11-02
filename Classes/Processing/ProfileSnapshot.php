@@ -7,7 +7,7 @@ namespace Mfd\AdaptiveVideo\Processing;
 /**
  * Immutable record of everything that influences the encoding result. It is
  * stored with each version; its hash is the profile fingerprint, so any change
- * leads to a new version on the next scan (ADR-010).
+ * leads to a new version on the next scan.
  */
 final readonly class ProfileSnapshot
 {

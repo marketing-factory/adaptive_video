@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Mfd\AdaptiveVideo\Storage;
 
 /**
- * Storage for generated streams, deliberately outside FAL (ADR-015). Physical
- * location and public URL are kept separate (ADR-003).
+ * Storage for generated streams, deliberately outside FAL. Physical
+ * location and public URL are kept separate.
  */
 interface ArtifactStorageInterface
 {

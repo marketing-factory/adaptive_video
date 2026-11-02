@@ -14,11 +14,11 @@ final class SourceAnalyzerTest extends UnitTestCase
     {
         $subject = new SourceAnalyzer(ExtensionSettings::fromArray([
             'ffprobePath' => '/usr/bin/ffprobe',
-            'commandPrefix' => 'nice -n 19',
+            'commandPrefix' => 'env LC_ALL=C',
         ]));
 
         self::assertSame(
-            ['nice', '-n', '19', '/usr/bin/ffprobe', '-v', 'error', '-print_format', 'json', '-show_format', '-show_streams', 'file:/var/www/fileadmin/a b.mp4'],
+            ['env', 'LC_ALL=C', '/usr/bin/ffprobe', '-v', 'error', '-print_format', 'json', '-show_format', '-show_streams', 'file:/var/www/fileadmin/a b.mp4'],
             $subject->buildCommand('/var/www/fileadmin/a b.mp4')
         );
     }

@@ -12,7 +12,7 @@ use Symfony\Component\Process\Process;
 /**
  * Encodes and packages a source as CMAF/fMP4 HLS in a single ffmpeg run: the
  * source is decoded once, and all renditions share the keyframes and thus the
- * segment boundaries (ADR-012).
+ * segment boundaries.
  *
  * Output layout below the working directory:
  * master.m3u8, <rendition>/{playlist.m3u8,init_<n>.mp4,segment_<n>.m4s} and
@@ -133,7 +133,7 @@ class FfmpegEncoder
 
         return [
             ...$command,
-            // As output options, e.g. "-threads 1" limits the encoders
+            // As output options, so they apply to all encoders
             ...$this->settings->ffmpegOptions,
             '-f', 'hls',
             '-hls_time', (string)$segmentDuration,

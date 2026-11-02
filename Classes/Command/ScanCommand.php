@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Main way to detect videos (ADR-008); meant to run as scheduler task. It only
+ * Main way to detect videos; meant to run as scheduler task. It only
  * queues messages, the encoding happens in the messenger worker.
  */
 #[AsCommand('adaptive-video:scan', 'Queue referenced video files that have no version for their current content and profile')]

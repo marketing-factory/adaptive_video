@@ -77,7 +77,7 @@ final readonly class SourceInfo
     }
 
     /**
-     * The audio stream marked as default, otherwise the first one (ADR-011).
+     * The audio stream marked as default, otherwise the first one.
      *
      * @param array<mixed> $streams
      */

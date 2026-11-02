@@ -14,7 +14,7 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 /**
  * Finds files that need a new version: supported video files with at least
  * one non-deleted reference, independent of the referencing table and field,
- * for which no version exists for the current content and profile (ADR-008).
+ * for which no version exists for the current content and profile.
  */
 final readonly class FileScanner
 {

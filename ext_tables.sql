@@ -1,5 +1,5 @@
 #
-# Technical table without TCA, accessed via QueryBuilder only (ADR-016).
+# Technical table without TCA, accessed via QueryBuilder only.
 # The unique index guarantees that a file is processed only once per
 # source content and encoding profile, even with parallel scans/workers.
 #

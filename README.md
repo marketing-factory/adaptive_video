@@ -1,6 +1,6 @@
 # Adaptive Video
 
-Delivers FAL videos as adaptive HLS streams. Videos are encoded asynchronously
+Delivers FAL videos as adaptive [HLS](https://en.wikipedia.org/wiki/HTTP_Live_Streaming) streams. Videos are encoded asynchronously
 with ffmpeg in a Symfony Messenger worker; until a stream is ready, and in
 browsers without JavaScript, the original file is delivered.
 
@@ -59,33 +59,24 @@ vendor/bin/typo3 extension:setup
 Set in *Admin Tools > Settings > Extension Configuration* or in
 `$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['adaptive_video']`.
 
-| Setting | Default | Description |
-| --- | --- | --- |
-| `processingEnabled` | `0` | Create versions and dispatch encoding jobs in this environment. Existing ready versions are delivered regardless. |
-| `deliveryEnabled` | `1` | Deliver ready versions as HLS. Disable to encode first and switch the frontend later. Flush the page cache after enabling. |
-| `defaultProfile` | `default` | Identifier of the active encoding profile. |
-| `supportedFileExtensions` | `mp4,mov,m4v,webm` | Video file extensions that are processed. |
-| `minimumDuration` | `10` | Shorter videos (seconds) are skipped. |
-| `ffmpegPath`, `ffprobePath` | `ffmpeg`, `ffprobe` | Binaries, absolute or looked up in `PATH`. |
-| `commandPrefix` | `nice -n 19` | Arguments placed before the binaries. |
-| `ffmpegOptions` | `-threads 1` | Additional output options. All options except `-threads` are part of the profile fingerprint: changing them re-encodes all videos. |
-| `maxRuntime` | `10800` | ffmpeg is aborted after this time (seconds) and the version marked `failed`. A version of a crashed worker can be taken over after this time. |
-| `redeliverTimeout` | `14400` | A job not acknowledged within this time is handed out again (crashed worker). Must be higher than `maxRuntime`. |
-| `maxSourceFileSize` | `0` | Larger files (MB) are skipped. `0` disables the limit. |
-| `maxSourceDuration` | `0` | Longer videos (seconds) are skipped. `0` disables the limit. |
-| `artifactDirectory` | `_videos` | Directory for the streams, relative to the public web root. |
-| `publicUrlPrefix` | `/_videos/` | URL path of the artifact directory. |
-| `temporaryDirectory` | `var/transient/adaptive_video` | Working directory; should be on the same filesystem as the artifact directory. |
-| `rendererPriority` | `20` | Must be higher than the renderers it replaces (`b13/poster-image`: 10, Core: 1). |
-
-Environment specific values are best set in `config/system/additional.php`,
-e.g. from environment variables:
-
-```php
-if (getenv('ADAPTIVE_VIDEO_PROCESS') !== false) {
-    $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['adaptive_video']['processingEnabled'] = (int)getenv('ADAPTIVE_VIDEO_PROCESS');
-}
-```
+| Setting                     | Default                        | Description                                                                                                                                         |
+|-----------------------------|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `processingEnabled`         | `0`                            | Create versions and dispatch encoding jobs in this environment. Existing ready versions are delivered regardless.                                   |
+| `deliveryEnabled`           | `1`                            | Deliver ready versions as HLS. Disable to encode first and switch the frontend later. Flush the page cache after enabling.                          |
+| `defaultProfile`            | `default`                      | Identifier of the active encoding profile.                                                                                                          |
+| `supportedFileExtensions`   | `mp4,mov,m4v,webm`             | Video file extensions that are processed.                                                                                                           |
+| `minimumDuration`           | `10`                           | Shorter videos (seconds) are skipped.                                                                                                               |
+| `ffmpegPath`, `ffprobePath` | `ffmpeg`, `ffprobe`            | Binaries, absolute or looked up in `PATH`.                                                                                                          |
+| `commandPrefix`             |                                | Arguments placed before the binaries.                                                                                                               |
+| `ffmpegOptions`             |                                | Additional output options for all encoders. All options except `-threads` are part of the profile fingerprint: changing them re-encodes all videos. |
+| `maxRuntime`                | `10800`                        | ffmpeg is aborted after this time (seconds) and the version marked `failed`. A version of a crashed worker can be taken over after this time.       |
+| `redeliverTimeout`          | `14400`                        | A job not acknowledged within this time is handed out again (crashed worker). Must be higher than `maxRuntime`.                                     |
+| `maxSourceFileSize`         | `0`                            | Larger files (MB) are skipped. `0` disables the limit.                                                                                              |
+| `maxSourceDuration`         | `0`                            | Longer videos (seconds) are skipped. `0` disables the limit.                                                                                        |
+| `artifactDirectory`         | `_videos`                      | Directory for the streams, relative to the public web root.                                                                                         |
+| `publicUrlPrefix`           | `/_videos/`                    | URL path of the artifact directory.                                                                                                                 |
+| `temporaryDirectory`        | `var/transient/adaptive_video` | Working directory; should be on the same filesystem as the artifact directory.                                                                      |
+| `rendererPriority`          | `20`                           | Must be higher than the renderers it replaces (`b13/poster-image`: 10, Core: 1).                                                                    |
 
 ### Encoding profile
 
@@ -251,4 +242,4 @@ Firefox, Edge). Check the browser console for CSP violations when testing.
 
 ## Acceptance checklist
 
-See [Documentation/AcceptanceChecklist.md](Documentation/AcceptanceChecklist.md).
+See [Documentation/AcceptanceChecklist/Index.rst](Documentation/AcceptanceChecklist/Index.rst).

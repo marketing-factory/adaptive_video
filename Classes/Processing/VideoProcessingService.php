@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Processes one version inside the messenger worker. Every outcome ends in a
  * final status; exceptions are not passed on, as the core does not retry
- * messages anyway (ADR-004).
+ * messages anyway.
  */
 final readonly class VideoProcessingService
 {

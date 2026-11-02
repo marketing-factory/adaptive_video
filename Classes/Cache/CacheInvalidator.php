@@ -9,7 +9,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 
 /**
  * Flushes the pages that render a file, so they pick up a new version or stop
- * pointing to the version of replaced content (ADR-009). A failure is only
+ * pointing to the version of replaced content. A failure is only
  * logged; the cache lifetime is the fallback.
  */
 class CacheInvalidator

@@ -24,7 +24,7 @@ final class FfmpegEncoderTest extends UnitTestCase
         }
 
         $source = SourceInfo::fromFfprobeData(['streams' => $streams, 'format' => ['duration' => '60']]);
-        $subject = new FfmpegEncoder(ExtensionSettings::fromArray($configuration + ['commandPrefix' => 'nice -n 19', 'ffmpegOptions' => '-threads 1']));
+        $subject = new FfmpegEncoder(ExtensionSettings::fromArray($configuration + ['commandPrefix' => 'env LC_ALL=C']));
 
         return $subject->buildCommand('/var/www/fileadmin/a b.mp4', $source, [
             new Rendition('720p', 1280, 720, 2800),
@@ -47,7 +47,7 @@ final class FfmpegEncoderTest extends UnitTestCase
     {
         $command = $this->buildCommand();
 
-        self::assertSame(['nice', '-n', '19', 'ffmpeg'], array_slice($command, 0, 4));
+        self::assertSame(['env', 'LC_ALL=C', 'ffmpeg'], array_slice($command, 0, 3));
         self::assertSame('file:/var/www/fileadmin/a b.mp4', $this->getOption($command, '-i'));
     }
 

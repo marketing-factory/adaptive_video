@@ -1,0 +1,96 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    name: Publish new version to TER
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    env:
+      TYPO3_EXTENSION_KEY: ${{ secrets.TYPO3_EXTENSION_KEY }}
+      TYPO3_API_TOKEN: ${{ secrets.TYPO3_API_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          # The upload comment is built from the commits since the previous tag.
+          fetch-depth: 0
+
+      - name: Check tag
+        run: |
+          if ! [[ ${{ github.ref }} =~ ^refs/tags/[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}$ ]]; then
+            exit 1
+          fi
+      - name: Get version
+        id: get-version
+        run: echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+
+      # This workflow runs on a tag push, where github.event.release does not
+      # exist. Its body was always empty, tailor sent an empty upload comment,
+      # and TER rejects that. Build the comment from the commits since the
+      # previous tag instead, and never leave it empty.
+      - name: Get comment
+        id: get-comment
+        env:
+          VERSION: ${{ steps.get-version.outputs.version }}
+          RELEASE_URL: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.get-version.outputs.version }}
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 "${VERSION}^" 2>/dev/null || true)
+          if [[ -n "$PREVIOUS_TAG" ]]; then
+            COMMENT=$(git log --no-merges --format='- %s' "${PREVIOUS_TAG}..${VERSION}")
+          else
+            COMMENT=$(git log --no-merges --format='- %s' "$VERSION")
+          fi
+          if [[ -z "${COMMENT//[[:space:]]/}" ]]; then
+            COMMENT="Released version ${VERSION}"
+          fi
+          COMMENT="${COMMENT}
+
+          Details: ${RELEASE_URL}"
+          DELIMITER="EOF_$(openssl rand -hex 8)"
+          {
+            echo "comment<<${DELIMITER}"
+            echo "$COMMENT"
+            echo "$DELIMITER"
+          } >> "$GITHUB_OUTPUT"
+
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.5
+          extensions: intl, mbstring, json, zip, curl
+          tools: composer:v2, typo3/tailor, clue/phar-composer
+
+      - name: Publish to TER
+        env:
+          VERSION: ${{ steps.get-version.outputs.version }}
+          # Through the environment, so quotes in a commit subject cannot
+          # break the shell command.
+          COMMENT: ${{ steps.get-comment.outputs.comment }}
+        run: |
+          php ~/.composer/vendor/bin/tailor set-version "$VERSION"
+          php ~/.composer/vendor/bin/tailor ter:publish --comment="$COMMENT" -- "$VERSION"
+        continue-on-error: true
+
+      - name: Create Standalone zip
+        run: |
+          php ~/.composer/vendor/bin/tailor set-version "${{ steps.get-version.outputs.version }}"
+          php ~/.composer/vendor/bin/tailor create-artefact \
+              ${{ steps.get-version.outputs.version }}  ${{ env.TYPO3_EXTENSION_KEY }} 
+
+      - name:  upload artifacts in the same step
+        uses: softprops/action-gh-release@v2
+        if: ${{startsWith(github.ref, 'refs/tags/') }}
+        with:
+          name: "[RELEASE] ${{ steps.get-version.outputs.version }}"
+          body: "${{ steps.get-comment.outputs.comment }}"
+          generate_release_notes: true
+          files: |
+            tailor-version-artefact/${{ env.TYPO3_EXTENSION_KEY }}_${{ steps.get-version.outputs.version }}.zip
+          fail_on_unmatched_files: true
